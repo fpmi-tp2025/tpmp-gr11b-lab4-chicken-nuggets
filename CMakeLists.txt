@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.16)
-project(lab04 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.30)
+project(FleetDatabaseApp LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 21)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Включить все предупреждения
@@ -18,27 +18,26 @@ set(SQLITE_DIR "${CMAKE_SOURCE_DIR}/sqlite3")
 set(BUILD_DIR "${CMAKE_SOURCE_DIR}/build")
 set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 
-include_directories(${INC_DIR} ${SQLITE_DIR})
+include_directories(${INC_DIR} "${SQLITE_DIR}")
 
 # Источники (ВСЕ .cpp)
 file(GLOB SOURCES ${SRC_DIR}/*.cpp)
 
 # Целевой исполняемый файл
-add_executable(lab04 ${SOURCES})
+add_executable(fleet_app ${SOURCES})
 
-# Подключаем локальную SQLite3
-add_library(sqlite3 STATIC ${SQLITE_DIR}/sqlite3.c)
-target_link_libraries(lab04 sqlite3)
+# SQLite3 (внешняя или системная)
+set(SQLITE3_INCLUDE_DIR "${SQLITE_DIR}")
+set(SQLITE3_LIBRARY "${SQLITE_DIR}/sqlite3.lib")
 
-# Если Windows — подключаем .lib
-if (WIN32)
-    target_link_libraries(lab04 ${SQLITE_DIR}/sqlite3.lib)
-endif()
+include_directories(${SQLITE3_INCLUDE_DIR})
+target_link_libraries(fleet_app ${SQLITE3_LIBRARY})
+
 
 # Установить каталог сборки бинарника
-set_target_properties(lab04 PROPERTIES
+set_target_properties(fleet_app PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR}
 )
 
 # Установить директорию для установки (make install)
-install(TARGETS lab04 RUNTIME DESTINATION bin)
+install(TARGETS fleet_app RUNTIME DESTINATION bin)
