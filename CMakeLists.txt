@@ -24,7 +24,7 @@ include_directories(${INC_DIR} "${SQLITE_DIR}")
 file(GLOB SOURCES ${SRC_DIR}/*.cpp)
 
 # Целевой исполняемый файл
-add_executable(fleet_app ${SOURCES})
+add_executable(fleet_app "${SOURCES}")
 
 # SQLite3 (внешняя или системная)
 set(SQLITE3_INCLUDE_DIR "${SQLITE_DIR}")
